@@ -1,6 +1,6 @@
 // Generate stars
 const starsContainer = document.querySelector('.stars');
-const starCount = 100;
+const starCount = 30;
 
 for (let i = 0; i < starCount; i++) {
     const star = document.createElement('div');
@@ -22,29 +22,24 @@ for (let i = 0; i < starCount; i++) {
     starsContainer.appendChild(star);
 }
 
-// Glitter trail effect
+// Star glitter effect
+let lastMove = 0;
 document.addEventListener('mousemove', function(e) {
+    const now = Date.now();
+    if (now - lastMove < 100) return; // Throttle to every 100ms
+    lastMove = now;
     const glitter = document.createElement('div');
-    glitter.className = 'glitter';
+    glitter.className = 'star-glitter';
 
-    // Position glitter at cursor
-    glitter.style.left = `${e.clientX}px`;
-    glitter.style.top = `${e.clientY}px`;
-
-    // Random color
-    const colors = ['#0ff0fc', '#ff00ff', '#00ff87', '#f700ff'];
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    glitter.style.background = color;
-
-    // Random size
-    const size = Math.random() * 10 + 5;
-    glitter.style.width = `${size}px`;
-    glitter.style.height = `${size}px`;
+    // Position glitter at cursor with random rotation
+    glitter.style.left = `${e.clientX - 10}px`;
+    glitter.style.top = `${e.clientY - 10}px`;
+    glitter.style.transform = `rotate(${Math.random() * 360}deg)`;
 
     document.body.appendChild(glitter);
 
     // Remove after animation completes
     setTimeout(() => {
         glitter.remove();
-    }, 2000);
+    }, 1000);
 });
